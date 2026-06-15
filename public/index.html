@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolTech — Custom Technology Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@200;300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:    #00E5C0;
+  --cyan:    #00D4FF;
+  --purple:  #C060E8;
+  --bg:      #020609;
+  --text:    #D4EAF0;
+  --dim:     #5A7A88;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Exo 2',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── FIXED CANVAS LAYERS ──────────────────────────────
+   z order (back → front):
+   0  #c-stars   — star field
+   1  #c-nebula  — upper atmospheric glow
+   2  #c-fog     — volumetric smoke (bottom of viewport, rises)
+   50 .page      — all page content
+   200 nav       — always on top
+─────────────────────────────────────────────────────── */
+#c-stars, #c-nebula{
+  position:fixed; inset:0;
+  pointer-events:none;
+}
+#c-stars { z-index:0; }
+#c-nebula{ z-index:1; }
+
+/* Fog: fixed to viewport bottom. Height = 68vh.
+   Top of canvas = 32% from bottom of screen.
+   This is ALWAYS consistent regardless of scroll. */
+#c-fog{
+  position:fixed;
+  bottom:0; left:0;
+  width:100%; height:68vh;
+  z-index:3;
+  pointer-events:none;
+}
+
+/* Dark scrim fixed at top of viewport — blocks fog from
+   appearing in the top half of the screen cleanly */
+#top-scrim{
+  position:fixed;
+  top:0; left:0; right:0;
+  height:52vh;
+  z-index:4;
+  pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(2,6,9,1)  0%,
+    rgba(2,6,9,1)  55%,
+    rgba(2,6,9,0)  100%);
+}
+
+/* All page content sits above everything */
+.page{ position:relative; z-index:50; }
+
+/* ── NAV ────────────────────────────────────────────── */
+nav{
+  position:fixed; top:0; left:0; right:0;
+  z-index:200; padding:1.1rem 4rem;
+  display:flex; align-items:center; justify-content:space-between;
+}
+nav::before{
+  content:''; position:absolute; inset:0;
+  background:rgba(2,6,9,0.80);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,229,192,0.08);
+  z-index:-1;
+}
+.logo{ display:flex; flex-direction:column; line-height:1; text-decoration:none; }
+.logo-main{
+  font-family:'Space Mono',monospace; font-weight:700;
+  font-size:1.15rem; letter-spacing:.1em;
+  background:linear-gradient(100deg,var(--teal) 0%,var(--cyan) 45%,var(--purple) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.logo-legal{
+  font-size:.55rem; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--dim); margin-top:3px;
+}
+.nav-links{ display:flex; gap:2.5rem; list-style:none; }
+.nav-links a{
+  font-size:.78rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--dim); text-decoration:none; transition:color .2s;
+}
+.nav-links a:hover{ color:var(--teal); }
+.nav-cta{
+  font-family:'Space Mono',monospace; font-size:.68rem;  text-decoration:none;
+  letter-spacing:.1em; color:var(--teal); background:transparent;
+  border:1px solid rgba(0,229,192,0.4); padding:.5rem 1.4rem;
+  border-radius:2px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+}
+.nav-cta::before{
+  content:''; position:absolute; inset:0;
+  background:rgba(0,229,192,0.08);
+  transform:translateX(-100%); transition:transform .2s;
+}
+.nav-cta:hover::before{ transform:translateX(0); }
+.nav-cta:hover{ box-shadow:0 0 20px rgba(0,229,192,0.2); }
+
+/* ── HERO ────────────────────────────────────────────── */
+.hero{
+  min-height:100vh; display:flex; align-items:center;
+  padding:8rem 4rem 4rem;
+  background-image:
+    linear-gradient(rgba(0,229,192,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,192,.018) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+.hero-inner{
+  max-width:1200px; margin:0 auto; width:100%;
+  display:grid; grid-template-columns:1.1fr .9fr; gap:4rem; align-items:center;
+}
+.eyebrow{
+  font-family:'Space Mono',monospace; font-size:.65rem;
+  letter-spacing:.28em; color:var(--purple); text-transform:uppercase;
+  margin-bottom:1.4rem; animation:appear 1s ease both;
+}
+.hero-title{
+  font-size:clamp(3rem,5.5vw,5rem); font-weight:200;
+  line-height:1.07; color:#EEF6FA; letter-spacing:-.02em;
+  text-shadow: 0 2px 40px rgba(2,6,9,0.9);
+  animation:appear 1s .1s ease both;
+}
+.hero-title strong{ font-weight:700; display:block; }
+.g{
+  font-weight:700;
+  background:linear-gradient(110deg,var(--teal) 0%,var(--cyan) 38%,var(--purple) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  background-size:200% 100%; animation:gs 8s ease-in-out infinite alternate;
+}
+@keyframes gs{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+.hero-body{
+  margin-top:2rem; font-size:1rem; line-height:1.82;
+  color:#8AAABB; max-width:480px;
+  text-shadow:0 1px 12px rgba(2,6,9,0.95);
+  animation:appear 1s .22s ease both;
+}
+.hero-actions{
+  display:flex; gap:1.2rem; margin-top:2.5rem; animation:appear 1s .34s ease both;
+}
+.btn-glow{
+  font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.1em;  text-decoration:none;
+  background:linear-gradient(110deg,#00B896,var(--cyan) 50%,#006B5A);
+  background-size:200% 100%; color:#020609; border:none;
+  padding:.9rem 2rem; border-radius:2px; cursor:pointer;
+  font-weight:700; transition:all .3s; animation:gs 6s ease-in-out infinite alternate;
+}
+.btn-glow:hover{
+  box-shadow:0 0 36px rgba(0,229,192,0.5),0 0 70px rgba(0,212,255,0.18);
+  transform:translateY(-1px);
+}
+.btn-outline{
+  font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.1em;  text-decoration:none;
+  color:var(--text); background:transparent;
+  border:1px solid rgba(255,255,255,0.14); padding:.9rem 2rem;
+  border-radius:2px; cursor:pointer; transition:all .25s;
+}
+.btn-outline:hover{ border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.04); }
+
+/* ── ORB ─────────────────────────────────────────────── */
+.hero-visual{ display:flex; justify-content:center; align-items:center; animation:appear 1s .18s ease both; }
+.orb-wrap{ position:relative; width:360px; height:360px; }
+.orb-halo{
+  position:absolute; inset:-40px; border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,255,.07) 30%,rgba(192,96,232,.05) 60%,transparent 75%);
+  animation:hp 6s ease-in-out infinite alternate;
+}
+@keyframes hp{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.12);opacity:1}}
+.orb-ring{ position:absolute; border-radius:50%; border:1px solid; }
+.ra{inset:30px;border-color:rgba(0,229,192,.2);animation:spin 22s linear infinite;}
+.rb{inset:0;border-color:rgba(192,96,232,.14);animation:spin 34s linear infinite reverse;}
+.rc{inset:60px;border-color:rgba(0,212,255,.12);animation:spin 14s linear infinite;}
+.ra::before{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal),0 0 24px var(--teal);top:50%;left:-3.5px;transform:translateY(-50%);}
+.rb::after{content:'';position:absolute;width:5px;height:5px;border-radius:50%;background:var(--purple);box-shadow:0 0 10px var(--purple),0 0 20px var(--purple);bottom:22px;right:14px;}
+.rc::before{content:'';position:absolute;width:4px;height:4px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);top:10px;left:50%;transform:translateX(-50%);}
+.orb-core{
+  position:absolute;inset:50px;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,rgba(0,229,192,.24) 0%,rgba(0,180,200,.12) 40%,rgba(192,96,232,.10) 65%,transparent 80%);
+  border:1px solid rgba(0,229,192,.2);
+  display:flex;align-items:center;justify-content:center;
+  animation:cp 8s ease-in-out infinite alternate;
+}
+@keyframes cp{
+  0%{box-shadow:0 0 40px rgba(0,229,192,.12),inset 0 0 30px rgba(0,229,192,.06)}
+  50%{box-shadow:0 0 80px rgba(0,212,255,.2),inset 0 0 50px rgba(0,229,192,.1)}
+  100%{box-shadow:0 0 50px rgba(192,96,232,.14),inset 0 0 35px rgba(192,96,232,.07)}
+}
+.orb-letters{
+  font-family:'Space Mono',monospace; font-size:3.2rem; font-weight:700;
+  background:linear-gradient(140deg,var(--teal),var(--cyan) 45%,var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:.6;background-size:200% 200%;animation:gs 5s ease-in-out infinite alternate;
+}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ── SECTION SHARED ──────────────────────────────────── */
+/* Sections need a dark backing so text stays legible over the fog.
+   Using a semi-transparent bg that lets a hint of fog glow through. */
+section.content-section{
+  position:relative;
+}
+section.content-section::before{
+  content:'';
+  position:absolute; inset:0;
+  background:rgba(2,6,9,0.72);
+  pointer-events:none;
+}
+.sw{ max-width:1200px; margin:0 auto; padding:5rem 4rem; position:relative; z-index:1; }
+.sh{ display:flex; align-items:center; gap:1.5rem; margin-bottom:3rem; }
+.sn{ font-family:'Space Mono',monospace; font-size:.62rem; color:var(--purple); letter-spacing:.22em; white-space:nowrap; }
+.st{ font-size:clamp(1.8rem,3vw,2.4rem); font-weight:300; color:#EEF6FA; letter-spacing:-.01em; }
+.st strong{ font-weight:700; }
+.gl{ flex:1; height:1px; background:linear-gradient(90deg,rgba(0,229,192,.35),rgba(192,96,232,.2),transparent); }
+
+/* ── SERVICES ────────────────────────────────────────── */
+.sg{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background:rgba(0,229,192,.08); border:1px solid rgba(0,229,192,.08);
+}
+.svc{
+  background:rgba(5,13,18,0.92); padding:2.5rem;
+  position:relative; overflow:hidden; transition:background .3s;
+}
+.svc:hover{ background:rgba(8,18,26,0.96); }
+.svc-blob{
+  position:absolute; width:260px; height:260px; border-radius:50%;
+  top:-60px; right:-60px;
+  opacity:0; transition:opacity .5s; pointer-events:none;
+}
+.svc:nth-child(odd)  .svc-blob{ background:radial-gradient(circle,rgba(0,229,192,.09) 0%,transparent 70%); }
+.svc:nth-child(even) .svc-blob{ background:radial-gradient(circle,rgba(192,96,232,.08) 0%,transparent 70%); }
+.svc:hover .svc-blob{ opacity:1; }
+.sbar{ width:28px; height:2px; margin-bottom:1.6rem; background:linear-gradient(90deg,var(--teal),var(--cyan)); }
+.svc:nth-child(even) .sbar{ background:linear-gradient(90deg,var(--purple),var(--cyan)); }
+.svc:nth-child(3) .sbar{ background:linear-gradient(90deg,var(--teal),var(--purple)); }
+.stitle{ font-size:1rem; font-weight:600; color:#EEF6FA; margin-bottom:.8rem; letter-spacing:.02em; }
+.sdesc{ font-size:.87rem; line-height:1.78; color:#6A909E; }
+
+/* ── ABOUT ───────────────────────────────────────────── */
+.about-inner{ display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.di{ font-size:.95rem; line-height:1.8; color:#6A909E; margin-top:1.2rem; }
+.dps{ display:flex; flex-direction:column; gap:1.4rem; margin-top:2rem; }
+.dp{
+  display:flex; gap:1.2rem; align-items:flex-start;
+  padding:1.1rem 1.3rem; border:1px solid transparent; border-radius:3px; transition:all .3s;
+}
+.dp:hover{ border-color:rgba(0,229,192,.1); background:rgba(0,229,192,.04); }
+.dd{ width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:6px; background:var(--teal); box-shadow:0 0 8px rgba(0,229,192,.6); }
+.dp:nth-child(even) .dd{ background:var(--purple); box-shadow:0 0 8px rgba(192,96,232,.6); }
+.dpt{ font-weight:600; color:#EEF6FA; margin-bottom:.25rem; font-size:.93rem; }
+.dpb{ font-size:.84rem; color:#6A909E; line-height:1.7; }
+
+/* Decorative card */
+.ac{ position:relative; width:100%; aspect-ratio:1; max-width:340px; justify-self:center; display:flex; align-items:center; justify-content:center; }
+.cb{
+  width:280px; height:280px; border:1px solid rgba(0,229,192,.12); border-radius:3px;
+  display:flex; align-items:center; justify-content:center; position:relative;
+  background:radial-gradient(ellipse at 35% 35%,rgba(0,229,192,.07) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 70%,rgba(192,96,232,.06) 0%,transparent 60%);
+  animation:cbr 8s ease-in-out infinite alternate;
+}
+@keyframes cbr{0%{box-shadow:0 0 30px rgba(0,229,192,.06)}100%{box-shadow:0 0 70px rgba(0,229,192,.14),0 0 120px rgba(0,212,255,.06)}}
+.cw{
+  font-family:'Space Mono',monospace; font-size:1rem; letter-spacing:.35em;
+  background:linear-gradient(110deg,var(--teal),var(--cyan),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  opacity:.35; font-weight:700; background-size:200% 100%; animation:gs 7s ease-in-out infinite alternate;
+}
+.cb::before{content:'';position:absolute;top:-1px;left:-1px;width:18px;height:18px;border-top:2px solid var(--teal);border-left:2px solid var(--teal);}
+.cb::after {content:'';position:absolute;top:-1px;right:-1px;width:18px;height:18px;border-top:2px solid var(--purple);border-right:2px solid var(--purple);}
+.cc1{position:absolute;bottom:-1px;left:-1px;width:18px;height:18px;border-bottom:2px solid var(--purple);border-left:2px solid var(--purple);}
+.cc2{position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-bottom:2px solid var(--teal);border-right:2px solid var(--teal);}
+.co{ position:absolute; inset:-35px; border-radius:50%; border:1px solid rgba(0,229,192,.1); animation:spin 18s linear infinite; }
+.co::before{ content:''; position:absolute; width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 10px var(--teal),0 0 20px var(--teal); top:-3px; left:50%; transform:translateX(-50%); }
+
+/* ── CONTACT ─────────────────────────────────────────── */
+.ci{ display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.cl h2{ font-size:clamp(2rem,3.5vw,3rem); font-weight:200; color:#EEF6FA; line-height:1.15; }
+.cl h2 strong{ font-weight:700; }
+.cl p{ margin-top:1rem; font-size:.9rem; line-height:1.75; color:#6A909E; }
+.cf{ display:flex; flex-direction:column; gap:.85rem; }
+.cf input,.cf textarea{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+  border-radius:2px; padding:.82rem 1.1rem; color:var(--text);
+  font-family:'Exo 2',sans-serif; font-size:.9rem;
+  outline:none; transition:border-color .25s,background .25s;
+}
+.cf textarea{ height:110px; resize:none; }
+.cf input:focus,.cf textarea:focus{ border-color:rgba(0,229,192,.3); background:rgba(0,229,192,.03); }
+.cf input::placeholder,.cf textarea::placeholder{ color:var(--dim); font-size:.84rem; }
+
+/* reCAPTCHA dark theme fix */
+.g-recaptcha iframe{ border-radius:3px; }
+
+/* Form status messages */
+.cf-status{
+  padding:.75rem 1rem; border-radius:3px;
+  font-size:.85rem; line-height:1.5; font-family:'Exo 2',sans-serif;
+}
+.cf-status--success{
+  background:rgba(0,229,192,.1);
+  border:1px solid rgba(0,229,192,.3);
+  color:#00E5C0;
+}
+.cf-status--error{
+  background:rgba(220,60,60,.1);
+  border:1px solid rgba(220,60,60,.3);
+  color:#FF7070;
+}
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer{
+  position:relative; z-index:50; padding:2rem 4rem;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid rgba(0,229,192,.06);
+  background:rgba(2,6,9,0.9);
+}
+.fb{
+  font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.18em; font-weight:700;
+  background:linear-gradient(100deg,var(--teal),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; opacity:.5;
+}
+.fc{ font-size:.7rem; letter-spacing:.07em; color:var(--dim); opacity:.5; }
+
+@keyframes appear{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- bg canvases -->
+<canvas id="c-stars"></canvas>
+<canvas id="c-nebula"></canvas>
+<canvas id="c-fog"></canvas>
+<!-- hard dark scrim over top half, fades out at mid-screen — blocks fog from rising too high -->
+<div id="top-scrim"></div>
+
+<div class="page">
+
+<nav>
+  <a class="logo" href="#">
+    <span class="logo-main">SolTech</span>
+    <span class="logo-legal">Sollenberger Technologies, LLC</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Custom Technology Solutions &amp; AI Research</div>
+      <h1 class="hero-title">
+        We build tech<br>
+        <strong>that <span class="g">works</span></strong><br>
+        for your business
+      </h1>
+      <p class="hero-body">From fully custom websites and web apps to cutting-edge AI research and integration — SolTech delivers technology built for your exact needs, not a template.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-glow">See What We Do</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="orb-wrap">
+        <div class="orb-halo"></div>
+        <div class="orb-ring rb"></div>
+        <div class="orb-ring ra"></div>
+        <!-- <div class="orb-core"><span class="orb-letters">ST</span></div> -->
+        <div class="orb-core"><img src="./hero-logo.svg"/></div>
+        <div class="orb-ring rc"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="content-section" id="services">
+  <div class="sw">
+    <div class="sh"><span class="sn">01</span><h2 class="st">What We <strong>Build</strong></h2><div class="gl"></div></div>
+    <div class="sg">
+      <div class="svc">
+        <div class="svc-blob"></div>
+        <div class="sbar"></div>
+        <div class="stitle">Custom Websites &amp; Web Apps</div>
+        <p class="sdesc">Hand-built from scratch — no page builders, no cookie-cutter templates. We design and develop websites and full web applications tailored to your brand, workflow, and goals.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-blob"></div>
+        <div class="sbar"></div>
+        <div class="stitle">AI Integration &amp; Research</div>
+        <p class="sdesc">We research, prototype, and integrate AI solutions into real business workflows — from custom language model pipelines to intelligent automation that actually saves you time and money.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-blob"></div>
+        <div class="sbar"></div>
+        <div class="stitle">Technology Consulting</div>
+        <p class="sdesc">Not sure what you need? We'll assess your current stack, identify opportunities, and build a clear technology roadmap — honest recommendations with no unnecessary upsells.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="content-section" id="about">
+  <div class="sw">
+    <div class="sh"><span class="sn">02</span><h2 class="st">The <strong>SolTech</strong> Difference</h2><div class="gl"></div></div>
+    <div class="about-inner">
+      <div>
+        <p class="di">SolTech is a small, dedicated team that believes every business deserves enterprise-grade technology — without enterprise-grade complexity or cost.</p>
+        <div class="dps">
+          <div class="dp">
+            <div class="dd"></div>
+            <div><div class="dpt">Everything is Custom</div><p class="dpb">We don't drop you into a Wix template or a generic AI wrapper. Every project starts from your specific problem and is built to solve it exactly.</p></div>
+          </div>
+          <div class="dp">
+            <div class="dd"></div>
+            <div><div class="dpt">Real AI, Real Results</div><p class="dpb">Our AI work is grounded in actual research — not marketing buzzwords. We stay current with the field so your integrations use what actually works.</p></div>
+          </div>
+          <div class="dp">
+            <div class="dd"></div>
+            <div><div class="dpt">Straight Talk, Always</div><p class="dpb">We'll tell you when something is overkill, when a simpler solution is better, and what you actually need — not what earns us more hours.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="ac">
+        <div class="co"></div>
+        <div class="cb"><span class="cw">SOLTECH</span><span class="cc1"></span><span class="cc2"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="content-section" id="contact">
+  <div class="sw">
+    <div class="sh"><span class="sn">03</span><h2 class="st">Let's <strong>Talk</strong></h2><div class="gl"></div></div>
+    <div class="ci">
+      <div class="cl">
+        <h2>Ready to<br><strong>get started?</strong></h2>
+        <p>Tell us about your project — whether it's a full custom site, an AI integration, or just an idea you need help shaping. We'll get back to you within one business day.</p>
+      </div>
+      <div class="cf" id="contactForm">
+        <input type="text"   id="cf-name"    placeholder="Your Name"           required>
+        <input type="email"  id="cf-email"   placeholder="Email Address"        required>
+        <input type="text"   id="cf-subject" placeholder="Subject (optional)">
+        <textarea            id="cf-message" placeholder="Tell us about your project..." required></textarea>
+
+        <!-- reCAPTCHA v2 widget — replace data-sitekey with your key -->
+        <div class="g-recaptcha"
+             data-sitekey="6Lcqb9YsAAAAADmRnbfFqcn5m_JBT-BNQ0XatQL9"
+             data-theme="dark"
+             style="margin-top:.4rem"></div>
+
+        <div id="cf-status" class="cf-status" style="display:none"></div>
+
+        <button class="btn-glow" id="cf-submit" style="margin-top:.8rem" onclick="submitForm()">
+          Send Message
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fb">SOLTECH</div>
+  <div class="fc">© 2025 Sollenberger Technologies, LLC — All Rights Reserved</div>
+</footer>
+
+</div><!-- /page -->
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════════════════════ */
+const rnd  = (a,b) => a + (b-a)*Math.random();
+const rndI = (a,b) => Math.floor(rnd(a, b+1));
+
+/* ═══════════════════════════════════════════════════════
+   STARS  — fixed canvas, twinkling star field
+═══════════════════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('c-stars');
+  const cx = cv.getContext('2d');
+  let W, H, stars=[], t=0;
+
+  function resize(){
+    W=cv.width=innerWidth; H=cv.height=innerHeight;
+    stars=[];
+    const n = Math.floor(W*H/3200);
+    for(let i=0;i<n;i++){
+      const r=Math.random();
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        sz: r<.72?.5 : r<.9?1:1.5,
+        col: Math.random()<.07 ? '0,229,192'
+           : Math.random()<.05 ? '192,96,232'
+           : '200,220,235',
+        op: .15+Math.random()*.65,
+        ts: .3+Math.random()*1.4,
+        tp: Math.random()*Math.PI*2
+      });
+    }
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H); t+=.01;
+    for(const s of stars){
+      cx.globalAlpha = s.op*(.55+.45*Math.sin(t*s.ts+s.tp));
+      cx.fillStyle   = `rgb(${s.col})`;
+      cx.beginPath(); cx.arc(s.x,s.y,s.sz,0,Math.PI*2); cx.fill();
+    }
+    cx.globalAlpha=1; requestAnimationFrame(draw);
+  }
+  resize(); draw();
+  window.addEventListener('resize', resize);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   NEBULA  — slow drifting upper atmospheric glow
+═══════════════════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('c-nebula');
+  const cx = cv.getContext('2d');
+  let W, H, t=0;
+  function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; }
+
+  function blob(x,y,r,col,a){
+    const g=cx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0, `rgba(${col},${a})`);
+    g.addColorStop(.5,`rgba(${col},${a*.4})`);
+    g.addColorStop(1, `rgba(${col},0)`);
+    cx.fillStyle=g; cx.fillRect(0,0,W,H);
+  }
+
+  function draw(){
+    cx.clearRect(0,0,W,H); t+=.003;
+    blob(W*(.72+.06*Math.sin(t*.7)), H*(.09+.04*Math.cos(t*.5)), W*.44, '192,96,232', .09+.035*Math.sin(t*.4));
+    blob(W*(.18+.05*Math.sin(t*.6)), H*(.22+.05*Math.cos(t*.8)), W*.36, '0,200,180',  .06+.025*Math.sin(t*.5));
+    blob(W*(.5 +.08*Math.sin(t*.4)), H*(.05+.03*Math.cos(t*.6)), W*.28, '0,212,255',  .04+.018*Math.sin(t*.35));
+    requestAnimationFrame(draw);
+  }
+  resize(); draw();
+  window.addEventListener('resize', resize);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   VOLUMETRIC FOG — aurora space fog, canvas-native blur
+   -------------------------------------------------------
+   Performance approach: NO ctx.filter (destroys perf).
+   Instead, each puff uses a radial gradient with a gentle
+   multi-stop falloff that mimics blur organically.
+
+   3 layers of drifting puffs + 1 layer of rising wisps:
+   • FLOOR  (8 puffs)  — giant, near-opaque, deep teal
+   • BODY   (18 puffs) — large, main cloud mass
+   • BILLOW (30 puffs) — medium, bumpy organic top edge
+   • WISPS  (55 particles) — small, actively rise upward
+
+   Canvas is fixed: bottom:0, height:68vh.
+   Vertical alpha curve: y=0 (canvas top) → 0, y=H → full.
+   A fixed dark scrim (separate div) cuts the top 52vh clean.
+
+   Dual-freq sinusoid drift per puff = organic motion with
+   no repeating loops.
+═══════════════════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('c-fog');
+  const cx = cv.getContext('2d');
+  let W, H;
+
+  function resize(){
+    W = cv.width  = innerWidth;
+    H = cv.height = Math.round(innerHeight * .68);
+  }
+
+  /* ── Palette ─── */
+  const C = {
+    dt:  [0,  95, 78],   // deep teal
+    mt:  [0, 175,138],   // mid teal
+    bt:  [0, 222,178],   // bright teal
+    cy:  [0, 198,248],   // cyan
+    pu:  [118, 38,195],  // purple
+    wh:  [148,248,220],  // wisp highlight
+  };
+
+  /* ── Puff factory ─── */
+  function makePuff(tier){
+    let yRng, rxRng, ryRng, aRng, cols;
+    if(tier===0){       // FLOOR
+      yRng=[.68,1.08]; rxRng=[320,580]; ryRng=[180,360]; aRng=[.22,.42];
+      cols=[C.dt,C.mt,C.mt];
+    } else if(tier===1){ // BODY
+      yRng=[.38,.92]; rxRng=[140,320]; ryRng=[80,210]; aRng=[.11,.22];
+      cols=[C.mt,C.bt,C.cy,C.mt];
+    } else {            // BILLOW
+      yRng=[.08,.78]; rxRng=[50,150]; ryRng=[38,110]; aRng=[.06,.14];
+      cols=[C.bt,C.cy,C.cy,C.pu,C.bt];
+    }
+    const col = cols[rndI(0,cols.length-1)];
+    return {
+      bx: rnd(-.12,1.12)*W, by: rnd(yRng[0],yRng[1])*H,
+      rx: rnd(rxRng[0],rxRng[1]), ry: rnd(ryRng[0],ryRng[1]),
+      rot: rnd(0,Math.PI*2), rotV: rnd(-.0005,.0005),
+      col, alpha: rnd(aRng[0],aRng[1]),
+      // dual-freq drift
+      ax:rnd(18,75),  ax2:rnd(6,28),
+      ay:rnd(7,34),   ay2:rnd(4,18),
+      fx:rnd(.1,.4),  fx2:rnd(.2,.65),
+      fy:rnd(.08,.35),fy2:rnd(.15,.55),
+      px:rnd(0,Math.PI*2), px2:rnd(0,Math.PI*2),
+      py:rnd(0,Math.PI*2), py2:rnd(0,Math.PI*2),
+      // breathing
+      sxA:rnd(.04,.15), syA:rnd(.03,.12),
+      sxS:rnd(.04,.17), syS:rnd(.04,.15),
+      sxP:rnd(0,Math.PI*2), syP:rnd(0,Math.PI*2),
+    };
+  }
+
+  /* ── Wisp factory ─── */
+  function makeWisp(startY){
+    const col = Math.random()<.6 ? C.bt : Math.random()<.65 ? C.cy : C.pu;
+    return {
+      x: rnd(0,W), y: startY??rnd(.4,1.1)*H,
+      r: rnd(16,48), alpha: rnd(.04,.11),
+      vy: rnd(.15,.48),
+      col,
+      tfx:rnd(.28,.85), tfy:rnd(.22,.7),
+      tpx:rnd(0,Math.PI*2), tpy:rnd(0,Math.PI*2),
+    };
+  }
+
+  /* ── Draw puff — radial gradient ellipse ─── */
+  function drawPuff(p,t){
+    const x = p.bx + p.ax*Math.sin(t*p.fx+p.px) + p.ax2*Math.sin(t*p.fx2+p.px2);
+    const y = p.by + p.ay*Math.cos(t*p.fy+p.py) + p.ay2*Math.cos(t*p.fy2+p.py2);
+
+    const yF = Math.max(0, Math.min(1, y/H));
+    const vM = Math.pow(yF, 1.25);
+    const a  = p.alpha * vM;
+    if(a < .005) return;
+
+    const rx = p.rx*(1+p.sxA*Math.sin(t*p.sxS+p.sxP));
+    const ry = p.ry*(1+p.syA*Math.cos(t*p.syS+p.syP));
+    p.rot += p.rotV;
+
+    cx.save();
+    cx.translate(x,y); cx.rotate(p.rot); cx.scale(1,ry/rx);
+
+    const [r,g,b]=p.col;
+    const g2=cx.createRadialGradient(0,0,0,0,0,rx);
+    // Soft multi-stop falloff = organic blur without ctx.filter
+    g2.addColorStop(0,    `rgba(${r},${g},${b},${a})`);
+    g2.addColorStop(0.28, `rgba(${r},${g},${b},${a*.82})`);
+    g2.addColorStop(0.55, `rgba(${r},${g},${b},${a*.52})`);
+    g2.addColorStop(0.78, `rgba(${r},${g},${b},${a*.22})`);
+    g2.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+
+    cx.beginPath(); cx.arc(0,0,rx,0,Math.PI*2);
+    cx.fillStyle=g2; cx.fill();
+    cx.restore();
+  }
+
+  /* ── Update & draw wisp ─── */
+  function tickWisp(w,t){
+    w.vx = Math.sin(t*w.tfx+w.tpx)*.5 + Math.sin(t*w.tfx*1.9+w.tpx)*.18;
+    w.x += w.vx; w.y -= w.vy;
+    if(w.y+w.r<0) Object.assign(w, makeWisp(H+rnd(10,50)));
+    if(w.x<-w.r*3||w.x>W+w.r*3) w.x=rnd(.1,.9)*W;
+
+    const yF=Math.max(0,Math.min(1,w.y/H));
+    const a =w.alpha*Math.pow(yF,1.0);
+    if(a<.004) return;
+
+    const [r,g,b]=w.col;
+    const gr=cx.createRadialGradient(w.x,w.y,0,w.x,w.y,w.r);
+    gr.addColorStop(0,  `rgba(${r},${g},${b},${a})`);
+    gr.addColorStop(.5, `rgba(${r},${g},${b},${a*.45})`);
+    gr.addColorStop(1,  `rgba(${r},${g},${b},0)`);
+    cx.beginPath(); cx.arc(w.x,w.y,w.r,0,Math.PI*2);
+    cx.fillStyle=gr; cx.fill();
+  }
+
+  /* ── Pool init ─── */
+  let floor2=[], body2=[], billow2=[], wisps2=[];
+  function initPools(){
+    floor2  = Array.from({length: 8},  ()=>makePuff(0));
+    body2   = Array.from({length:18},  ()=>makePuff(1));
+    billow2 = Array.from({length:30},  ()=>makePuff(2));
+    wisps2  = Array.from({length:55},  ()=>makeWisp(rnd(0,H)));
+  }
+
+  /* ── Render loop ─── */
+  let t=0;
+  function draw(){
+    cx.clearRect(0,0,W,H);
+
+    for(const p of floor2)  drawPuff(p,t);
+    for(const p of body2)   drawPuff(p,t);
+    for(const p of billow2) drawPuff(p,t);
+    for(const w of wisps2)  tickWisp(w,t);
+
+    // Soft top fade — erases top 22% so fog dissolves cleanly into space
+    const fd=cx.createLinearGradient(0,0,0,H*.24);
+    fd.addColorStop(0,'rgba(2,6,9,1)');
+    fd.addColorStop(1,'rgba(2,6,9,0)');
+    cx.fillStyle=fd; cx.fillRect(0,0,W,H*.24);
+
+    t+=.005;
+    requestAnimationFrame(draw);
+  }
+
+  resize(); initPools(); draw();
+  window.addEventListener('resize',()=>{ resize(); initPools(); });
+})();
+</script>
+<!-- Google reCAPTCHA v2 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+/* ── Contact form submission ─────────────────────────── */
+async function submitForm(){
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+  const status  = document.getElementById('cf-status');
+  const btn     = document.getElementById('cf-submit');
+
+  // Basic client-side validation
+  if(!name || !email || !message){
+    showStatus('Please fill in your name, email, and message.', 'error');
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showStatus('Please enter a valid email address.', 'error');
+    return;
+  }
+
+  // reCAPTCHA token
+  const recaptchaToken = grecaptcha.getResponse();
+  if(!recaptchaToken){
+    showStatus('Please complete the reCAPTCHA check.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message, recaptchaToken })
+    });
+
+    const data = await res.json();
+
+    if(res.ok && data.success){
+      showStatus('Message sent! We\'ll get back to you within one business day.', 'success');
+      // Clear form
+      ['cf-name','cf-email','cf-subject','cf-message'].forEach(id => document.getElementById(id).value='');
+      grecaptcha.reset();
+    } else {
+      showStatus(data.error || 'Something went wrong. Please try again.', 'error');
+      grecaptcha.reset();
+    }
+  } catch(err){
+    showStatus('Could not reach the server. Please try again later.', 'error');
+    grecaptcha.reset();
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Send Message';
+}
+
+function showStatus(msg, type){
+  const el = document.getElementById('cf-status');
+  el.textContent = msg;
+  el.className = 'cf-status cf-status--' + type;
+  el.style.display = 'block';
+}
+</script>
+</body>
+</html>
