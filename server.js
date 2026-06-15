@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve the website static files from the same directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '')));
 
 /* ── Rate limiting — max 5 contact submissions per 15 min per IP ── */
 const contactLimiter = rateLimit({
