@@ -1,0 +1,28 @@
+.sg {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(0,229,192,.08); border: 1px solid rgba(0,229,192,.08);
+}
+.svc {
+  background: rgba(5,13,18,0.92); padding: 2.5rem;
+  position: relative; overflow: hidden; transition: background .3s;
+}
+.svc:hover { background: rgba(8,18,26,0.96); }
+
+.svc-blob { position: absolute; width: 260px; height: 260px; border-radius: 50%; top: -60px; right: -60px; opacity: 0; transition: opacity .5s; pointer-events: none; }
+.svc:nth-child(odd)  .svc-blob { background: radial-gradient(circle, rgba(0,229,192,.09) 0%, transparent 70%); }
+.svc:nth-child(even) .svc-blob { background: radial-gradient(circle, rgba(192,96,232,.08) 0%, transparent 70%); }
+.svc:hover .svc-blob { opacity: 1; }
+
+.sbar { width: 28px; height: 2px; margin-bottom: 1.6rem; background: linear-gradient(90deg, var(--teal), var(--cyan)); }
+.svc:nth-child(even) .sbar { background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+.svc:nth-child(3)    .sbar { background: linear-gradient(90deg, var(--teal), var(--purple)); }
+
+.stitle { font-size: 1rem; font-weight: 600; color: #EEF6FA; margin-bottom: .8rem; letter-spacing: .02em; }
+.sdesc { font-size: .87rem; line-height: 1.78; color: #6A909E; }
+
+@media (max-width: 860px) {
+  .sg { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .svc { padding: 1.9rem; }
+}
