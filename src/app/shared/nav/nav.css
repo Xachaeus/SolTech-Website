@@ -1,0 +1,86 @@
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.1rem var(--pad-x);
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: rgba(2,6,9,0.80);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,229,192,0.08);
+}
+
+/* ── Logo ─────────────────────────────────────────────────────────────── */
+.logo { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+.logo-main {
+  font-family: 'Space Mono', monospace; font-weight: 700;
+  font-size: 1.15rem; letter-spacing: .1em;
+  background: linear-gradient(100deg, var(--teal) 0%, var(--cyan) 45%, var(--purple) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.logo-legal { font-size: .55rem; letter-spacing: .28em; text-transform: uppercase; color: var(--dim); margin-top: 3px; }
+
+/* ── Right-side cluster (links + CTA) ─────────────────────────────────── */
+.nav-collapse { display: flex; align-items: center; gap: 2.5rem; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none; transition: color .2s;
+}
+.nav-links a:hover { color: var(--teal); }
+
+.nav-cta {
+  font-family: 'Space Mono', monospace; font-size: .68rem; text-decoration: none;
+  letter-spacing: .1em; color: var(--teal); background: transparent;
+  border: 1px solid rgba(0,229,192,0.4); padding: .5rem 1.4rem;
+  border-radius: 2px; cursor: pointer; transition: all .2s;
+  position: relative; overflow: hidden; white-space: nowrap;
+}
+.nav-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(0,229,192,0.08);
+  transform: translateX(-100%); transition: transform .2s;
+}
+.nav-cta:hover::before { transform: translateX(0); }
+.nav-cta:hover { box-shadow: 0 0 20px rgba(0,229,192,0.2); }
+
+/* ── Hamburger (hidden on desktop) ────────────────────────────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  width: 38px; height: 38px; padding: 8px;
+  background: transparent; border: none; cursor: pointer; z-index: 2;
+}
+.hamburger span {
+  display: block; height: 2px; width: 100%; border-radius: 2px;
+  background: var(--teal); transition: transform .28s ease, opacity .2s ease;
+}
+
+/* ── Mobile layout ────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .hamburger { display: flex; }
+
+  .nav-collapse {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: rgba(2,6,9,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,229,192,0.10);
+    padding: 0 var(--pad-x);
+    max-height: 0; overflow: hidden;
+    transition: max-height .32s ease, padding .32s ease;
+  }
+  nav.open .nav-collapse { max-height: 360px; padding: .5rem var(--pad-x) 1.6rem; }
+
+  .nav-links { flex-direction: column; gap: 0; }
+  .nav-links a {
+    display: block; padding: .95rem 0; font-size: .85rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .nav-cta { margin-top: 1rem; text-align: center; padding: .8rem; }
+
+  /* Animate the bars into an X when open. */
+  nav.open .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  nav.open .hamburger span:nth-child(2) { opacity: 0; }
+  nav.open .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}

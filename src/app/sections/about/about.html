@@ -1,0 +1,38 @@
+<section class="content-section" id="about">
+  <div class="sw">
+    <div class="sh">
+      <span class="sn">02</span>
+      <h2 class="st">The <strong>{{ site.brand }}</strong> Difference</h2>
+      <div class="gl"></div>
+    </div>
+
+    <div class="about-inner">
+      <div>
+        <p class="di">
+          {{ site.brand }} is a small, dedicated team that believes every business
+          deserves enterprise-grade technology — without enterprise-grade
+          complexity or cost.
+        </p>
+        <div class="dps">
+          @for (point of points; track point.title) {
+            <div class="dp">
+              <div class="dd"></div>
+              <div>
+                <div class="dpt">{{ point.title }}</div>
+                <p class="dpb">{{ point.body }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="ac">
+        <div class="co"></div>
+        <div class="cb">
+          <span class="cw">{{ site.brand }}</span>
+          <span class="cc1"></span><span class="cc2"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

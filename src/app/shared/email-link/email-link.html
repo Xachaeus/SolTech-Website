@@ -1,0 +1,30 @@
+<span class="email-wrap">
+  <a class="email-address"
+     [href]="'mailto:' + email"
+     (click)="onAddressClick($event)"
+     [title]="'Click to copy ' + email">{{ email }}</a>
+
+  <button class="copy-btn" type="button"
+          (click)="copy()"
+          [class.done]="copied()"
+          [attr.aria-label]="copied() ? 'Email copied to clipboard' : 'Copy email address'">
+    @if (copied()) {
+      <!-- check icon -->
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+           stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    } @else {
+      <!-- copy icon -->
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    }
+  </button>
+
+  <span class="copied-toast" [class.show]="copied()" aria-live="polite" role="status">Copied!</span>
+</span>

@@ -1,0 +1,23 @@
+<nav [class.open]="menuOpen()">
+  <a class="logo" href="#" (click)="close()">
+    <span class="logo-main">{{ site.brand }}</span>
+    <span class="logo-legal">{{ site.legalName }}</span>
+  </a>
+
+  <button class="hamburger" type="button"
+          [attr.aria-expanded]="menuOpen()"
+          aria-label="Toggle navigation menu"
+          aria-controls="nav-collapse"
+          (click)="toggle()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-collapse" id="nav-collapse">
+    <ul class="nav-links">
+      @for (link of links; track link.href) {
+        <li><a [href]="link.href" (click)="close()">{{ link.label }}</a></li>
+      }
+    </ul>
+    <a href="#contact" class="nav-cta" (click)="close()">Get in Touch</a>
+  </div>
+</nav>

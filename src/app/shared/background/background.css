@@ -1,0 +1,22 @@
+:host { display: block; }
+
+/* All layers are fixed to the viewport and ignore pointer events. */
+.c-stars,
+.c-nebula { position: fixed; inset: 0; pointer-events: none; }
+.c-stars  { z-index: 0; }
+.c-nebula { z-index: 1; }
+
+/* Fog: pinned to viewport bottom, 68vh tall, rises upward. */
+.c-fog {
+  position: fixed; bottom: 0; left: 0;
+  width: 100%; height: 68vh;
+  z-index: 3; pointer-events: none;
+}
+
+/* Scrim fixed at top — blocks fog from the top half of the screen cleanly. */
+.top-scrim {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 52vh; z-index: 4; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(2,6,9,1) 0%, rgba(2,6,9,1) 55%, rgba(2,6,9,0) 100%);
+}

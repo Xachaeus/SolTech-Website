@@ -1,0 +1,40 @@
+.about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+.di { font-size: .95rem; line-height: 1.8; color: #6A909E; margin-top: 1.2rem; }
+.dps { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 2rem; }
+.dp { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.1rem 1.3rem; border: 1px solid transparent; border-radius: 3px; transition: all .3s; }
+.dp:hover { border-color: rgba(0,229,192,.1); background: rgba(0,229,192,.04); }
+.dd { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; background: var(--teal); box-shadow: 0 0 8px rgba(0,229,192,.6); }
+.dp:nth-child(even) .dd { background: var(--purple); box-shadow: 0 0 8px rgba(192,96,232,.6); }
+.dpt { font-weight: 600; color: #EEF6FA; margin-bottom: .25rem; font-size: .93rem; }
+.dpb { font-size: .84rem; color: #6A909E; line-height: 1.7; }
+
+/* Decorative card */
+.ac { position: relative; width: 100%; aspect-ratio: 1; max-width: 340px; justify-self: center; display: flex; align-items: center; justify-content: center; }
+.cb {
+  width: 280px; height: 280px; border: 1px solid rgba(0,229,192,.12); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+  background: radial-gradient(ellipse at 35% 35%, rgba(0,229,192,.07) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 70%, rgba(192,96,232,.06) 0%, transparent 60%);
+  animation: cbr 8s ease-in-out infinite alternate;
+}
+.cw {
+  font-family: 'Space Mono', monospace; font-size: 1rem; letter-spacing: .35em; text-transform: uppercase;
+  background: linear-gradient(110deg, var(--teal), var(--cyan), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  opacity: .35; font-weight: 700; background-size: 200% 100%; animation: gs 7s ease-in-out infinite alternate;
+}
+.cb::before { content: ''; position: absolute; top: -1px; left: -1px;  width: 18px; height: 18px; border-top: 2px solid var(--teal);   border-left: 2px solid var(--teal); }
+.cb::after  { content: ''; position: absolute; top: -1px; right: -1px; width: 18px; height: 18px; border-top: 2px solid var(--purple); border-right: 2px solid var(--purple); }
+.cc1 { position: absolute; bottom: -1px; left: -1px;  width: 18px; height: 18px; border-bottom: 2px solid var(--purple); border-left: 2px solid var(--purple); }
+.cc2 { position: absolute; bottom: -1px; right: -1px; width: 18px; height: 18px; border-bottom: 2px solid var(--teal);   border-right: 2px solid var(--teal); }
+.co { position: absolute; inset: -35px; border-radius: 50%; border: 1px solid rgba(0,229,192,.1); animation: spin 18s linear infinite; }
+.co::before { content: ''; position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal), 0 0 20px var(--teal); top: -3px; left: 50%; transform: translateX(-50%); }
+
+@media (max-width: 980px) {
+  .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .ac { order: -1; }
+}
+@media (max-width: 640px) {
+  .ac { display: none; } /* drop the purely decorative card on phones */
+}
