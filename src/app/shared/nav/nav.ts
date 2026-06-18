@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { SITE } from '../../core/site.config';
 import { NAV_LINKS } from '../../core/site.content';
 
@@ -6,6 +6,7 @@ import { NAV_LINKS } from '../../core/site.content';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './nav.css',
 })
 export class Nav {
@@ -15,6 +16,10 @@ export class Nav {
   /** Mobile menu open/closed state. */
   protected readonly menuOpen = signal(false);
 
-  toggle(): void { this.menuOpen.update((v) => !v); }
-  close(): void { this.menuOpen.set(false); }
+  toggle(): void {
+    this.menuOpen.update((v) => !v);
+  }
+  close(): void {
+    this.menuOpen.set(false);
+  }
 }

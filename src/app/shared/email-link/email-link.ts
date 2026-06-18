@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { SITE } from '../../core/site.config';
 
 /**
@@ -16,6 +16,7 @@ import { SITE } from '../../core/site.config';
 @Component({
   selector: 'app-email-link',
   templateUrl: './email-link.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './email-link.css',
 })
 export class EmailLink {
@@ -59,7 +60,11 @@ export class EmailLink {
     ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); } catch { /* no-op */ }
+    try {
+      document.execCommand('copy');
+    } catch {
+      /* no-op */
+    }
     document.body.removeChild(ta);
   }
 
