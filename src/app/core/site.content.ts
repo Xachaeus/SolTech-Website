@@ -20,11 +20,19 @@ export interface AboutPoint {
   title: string;
   body: string;
 }
+
+export interface Intro {
+  name: string;
+  position: string;
+  email: string;
+  text: string;
+}
+
 /* Navlinks, but contact is kinda irrelevant since we have get in touch button? */
 export const NAV_LINKS: NavLink[] = [
   { label: 'Services', href: '#services' },
   { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' }, 
+  { label: 'Contact', href: '#contact' },
 ];
 
 export const SERVICES: Service[] = [
@@ -56,3 +64,33 @@ export const ABOUT_POINTS: AboutPoint[] = [
     body: "We'll tell you when something is overkill, when a simpler solution is better, and what you actually need — not what earns us more hours.",
   },
 ];
+
+export const INTROS: Intro[] = [
+  {
+    name: "Zack Sollenberger",
+    position: "Co-Founder and CEO",
+    email: "zsollenberger@sollenbergertech.com",
+    text: "Zack is a rising Senior at the University of Delaware who has been \
+    programming as a hobby since he was seven years old. He is currently \
+    pursuing a Bachelor's Degree in Computer Science, and is enrolled in UD's 4+1 \
+    program. He has been leading a research team under Dr. Sunita Chandrasekaran since \
+    2023, is the primary author of two internationally-published research papers, \
+    and is the recipient of UD's Computer Department's Outstanding Sophomore/Junior of the Year \
+    Award. He is extraordinarily passionate about technological development and continues to \
+    spend his free time on tech projects."
+  },
+
+  {
+    name: "Maksym Shkopas",
+    position: "Co-Founder and CMO",
+    email: "mshkopas@sollenbergertech.com",
+    text: "Max is a recentgraduate of the University of Delaware, holding a Bachelor's Degree in \
+    Computer Science with a concentration in Artificial Intelligence, and is currently pursuing \
+    a Master's Degree in Electrical Engineering. He has three years of experience developing AI \
+    systems for Military and and Department of Defense applications, is a co-author on three \
+    internationally-published computer vision research papers, and has spent his career working at \
+    the intersection of machine learning, computer vision, and mission-critical software. In his free \
+    time, he develops advanced Artificial Intelligence applications for subjects he is passionate about."
+  },
+
+]

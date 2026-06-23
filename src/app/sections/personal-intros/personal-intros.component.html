@@ -1,0 +1,29 @@
+<section class="personal-intros">
+  <div class="sw">
+    <div class="sh">
+      <h2 class="st">Who <strong><span class="g">We</span></strong> Are</h2>
+      <div class="gl"></div>
+    </div>
+
+    <div class="cl">
+
+      @for (intro of intros; track intro.name; let i = $index) {
+        <div class="intro-card" [style.--anim-delay]="((i+1)/10)+'s'">
+          <div class="gl", style="margin-bottom: 15px;"></div>
+          <div class="ci">
+            <div class="cl">
+              <h2>{{ intro.name }}</h2>
+              <h3>{{ intro.position }}</h3>
+            </div>
+            <div class="contact-card">
+              <span class="contact-label">{{ intro.email }}</span>
+              <p>{{ intro.text }}</p>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="gl intro-card" [style.--anim-delay]="((intros.length+1)/10)+'s'"></div>
+
+    </div>
+  </div>
+</section>

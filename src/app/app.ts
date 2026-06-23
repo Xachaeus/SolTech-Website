@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Background } from './shared/background/background';
-import { Nav } from './shared/nav/nav';
-import { Footer } from './shared/footer/footer';
+import { Background } from './shared/background/background.component';
+import { Nav } from './shared/nav/nav.component';
+import { Footer } from './shared/footer/footer.component';
 
 /**
  * Root shell. Holds the global chrome that persists across every route:

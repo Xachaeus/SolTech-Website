@@ -3,9 +3,9 @@ import { SITE } from '../../core/site.config';
 
 @Component({
   selector: 'app-footer',
-  templateUrl: './footer.html',
+  templateUrl: './footer.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './footer.css',
+  styleUrl: './footer.component.css',
 })
 export class Footer {
   protected readonly site = SITE;

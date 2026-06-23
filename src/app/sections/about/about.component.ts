@@ -4,9 +4,9 @@ import { ABOUT_POINTS } from '../../core/site.content';
 
 @Component({
   selector: 'app-about',
-  templateUrl: './about.html',
+  templateUrl: './about.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './about.css',
+  styleUrl: './about.component.css',
 })
 export class About {
   protected readonly site = SITE;
