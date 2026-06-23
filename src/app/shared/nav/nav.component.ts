@@ -5,9 +5,9 @@ import { NAV_LINKS } from '../../core/site.content';
 /** Fixed top navigation. Collapses to a hamburger menu on small screens. */
 @Component({
   selector: 'app-nav',
-  templateUrl: './nav.html',
+  templateUrl: './nav.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './nav.css',
+  styleUrl: './nav.component.css',
 })
 export class Nav {
   protected readonly site = SITE;

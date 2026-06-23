@@ -15,9 +15,9 @@ import { SITE } from '../../core/site.config';
  */
 @Component({
   selector: 'app-email-link',
-  templateUrl: './email-link.html',
+  templateUrl: './email-link.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './email-link.css',
+  styleUrl: './email-link.component.css',
 })
 export class EmailLink {
   protected readonly email = SITE.email;

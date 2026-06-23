@@ -22,9 +22,9 @@ import {
  */
 @Component({
   selector: 'app-background',
-  templateUrl: './background.html',
+  templateUrl: './background.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './background.css',
+  styleUrl: './background.component.css',
 })
 export class Background {
   private readonly starsRef = viewChild.required<ElementRef<HTMLCanvasElement>>('stars');

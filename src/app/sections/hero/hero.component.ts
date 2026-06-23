@@ -3,9 +3,9 @@ import { SITE } from '../../core/site.config';
 
 @Component({
   selector: 'app-hero',
-  templateUrl: './hero.html',
+  templateUrl: './hero.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './hero.css',
+  styleUrl: './hero.component.css',
 })
 export class Hero {
   protected readonly site = SITE;

@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Hero } from '../../sections/hero/hero';
-import { Services } from '../../sections/services/services';
-import { About } from '../../sections/about/about';
-import { Contact } from '../../sections/contact/contact';
+import { Hero } from '../../sections/hero/hero.component';
+import { Services } from '../../sections/services/services.component';
+import { About } from '../../sections/about/about.component';
+import { Contact } from '../../sections/contact/contact.component';
 
 /** The landing page: stacks the marketing sections in order.
  * IDK what HTML file is doing its just 4 lines
@@ -11,6 +11,6 @@ import { Contact } from '../../sections/contact/contact';
   selector: 'app-home',
   imports: [Hero, Services, About, Contact],
   changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './home.html',
+  templateUrl: './home.page.html',
 })
 export class Home {}
