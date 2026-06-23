@@ -2,7 +2,7 @@
 
 /* All layers are fixed to the viewport and ignore pointer events. */
 .c-stars,
-.c-nebula { position: fixed; inset: 0; pointer-events: none; }
+.c-nebula { position: fixed; inset: 0; top: 0; width:100%; pointer-events: none; }
 .c-stars  { z-index: 0; }
 .c-nebula { z-index: 1; }
 
