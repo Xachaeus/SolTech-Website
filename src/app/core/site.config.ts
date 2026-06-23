@@ -4,7 +4,7 @@ export const SITE = {
   legalName: 'Sollenberger Technologies, LLC',
 
   /** PLACEHOLDER */
-  email: 'contact@soltech.example',
+  email: 'contact@sollenbergertech.com',
 
   tagline: 'Custom Technology Solutions & AI Research',
 

@@ -45,6 +45,28 @@ body {
 /* Main content wrapper — sits above the fixed background canvases. */
 .page { position: relative; z-index: 10; }
 
+.row-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.vertically-centered {
+  align-items: center;
+}
+
+.vertically-bottomed {
+  align-items: flex-end;
+}
+
+.column-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontally-centered {
+  justify-content: center;
+}
+
 /* ── Shared section scaffolding ───────────────────────────────────────────── */
 .sw { max-width: 1200px; margin: 0 auto; padding: var(--section-y) var(--pad-x); position: relative; z-index: 1; }
 
@@ -135,3 +157,41 @@ body {
 
 /* Offset in-page anchor scrolling so section headings clear the fixed nav. */
 section[id] { scroll-margin-top: 90px; }
+
+
+.gradient-logo-open {
+  width: 100%;
+  aspect-ratio: 1.0;
+
+  /* 1. Define your beautiful CSS gradient here */
+  background-image: linear-gradient(135deg, var(--teal) 0%, var(--purple) 100%);
+
+  /* 2. Mask the background gradient to only show through the SVG shape */
+  -webkit-mask-image: url('/images/OpenLogo.svg');
+  mask-image: url('/images/OpenLogo.svg');
+
+  /* 3. Standard mask behaviors */
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+
+.gradient-logo-closed {
+  width: 100%;
+  aspect-ratio: 1.0;
+
+  /* 1. Define your beautiful CSS gradient here */
+  background-image: linear-gradient(135deg, var(--teal) 10%, var(--purple) 90%);
+
+  /* 2. Mask the background gradient to only show through the SVG shape */
+  -webkit-mask-image: url('/images/Logo.svg');
+  mask-image: url('/images/Logo.svg');
+
+  /* 3. Standard mask behaviors */
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
