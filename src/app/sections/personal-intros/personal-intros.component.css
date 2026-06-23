@@ -1,0 +1,40 @@
+
+.personal-intros {
+  min-height: 100vh;
+  padding: 8rem var(--pad-x) 4rem;
+  background-image:
+    linear-gradient(rgba(0,229,192,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,192,.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  animation: appear 1s ease both;
+}
+
+
+.ci { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: center; margin-bottom: 15px; }
+
+.cl h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 200; color: #EEF6FA; line-height: 1.15; }
+.cl h2 strong { font-weight: 700; }
+.cl p { margin-top: 1rem; font-size: .9rem; line-height: 1.75; color: #6A909E; }
+
+.contact-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem;
+  padding: 2.2rem; border: 1px solid rgba(0,229,192,.12); border-radius: 4px;
+  background: radial-gradient(ellipse at 30% 20%, rgba(0,229,192,.05), rgba(0,0,0,0.4) 60%);
+}
+.contact-label {
+  font-size: .7rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--purple);
+}
+.contact-hint { font-size: .78rem; color: var(--dim); line-height: 1.6; }
+
+
+.intro-card {
+  animation: appear 1s var(--anim-delay) ease both;
+}
+
+@media (max-width: 860px) {
+  .ci { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+@media (max-width: 640px) {
+  .contact-card { padding: 1.8rem; width: 100%; }
+}

@@ -108,6 +108,22 @@ body {
   transform: translateY(-1px);
 }
 
+
+.btn-glow-ex {
+  display: inline-block;
+  font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .1em;
+  text-decoration: none; text-align: center;
+  background: linear-gradient(110deg, var(--cyan), var(--purple) 50%, var(--teal));
+  background-size: 200% 100%;
+  color: #020609; border: none; padding: .9rem 2rem; border-radius: 2px;
+  cursor: pointer; font-weight: 700; transition: all .3s;
+  animation: gs 8s ease-in-out infinite alternate;
+}
+.btn-glow-ex:hover {
+  box-shadow: 0 0 36px rgba(0,229,192,0.5), 0 0 70px rgba(0,212,255,0.18);
+  transform: translateY(-1px);
+}
+
 .btn-outline {
   display: inline-block;
   font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: .1em;
@@ -159,6 +175,7 @@ body {
 section[id] { scroll-margin-top: 90px; }
 
 
+/* Shared Logo Displays */
 .gradient-logo-open {
   width: 100%;
   aspect-ratio: 1.0;
