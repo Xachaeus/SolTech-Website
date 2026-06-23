@@ -1,4 +1,5 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SITE } from '../../core/site.config';
 import { NAV_LINKS } from '../../core/site.content';
 
@@ -7,6 +8,7 @@ import { NAV_LINKS } from '../../core/site.content';
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [RouterLink],
   styleUrl: './nav.component.css',
 })
 export class Nav {

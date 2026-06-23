@@ -1,3 +1,4 @@
+
 .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
 
 .di { font-size: .95rem; line-height: 1.8; color: #6A909E; margin-top: 1.2rem; }
@@ -37,4 +38,5 @@
 }
 @media (max-width: 640px) {
   .ac { display: none; } /* drop the purely decorative card on phones */
+  .about-inner .btn-glow-ex { width: 100%; flex: 1 1 auto; min-width: 140px; }
 }
