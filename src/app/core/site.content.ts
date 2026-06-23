@@ -25,14 +25,15 @@ export interface Intro {
   name: string;
   position: string;
   email: string;
+  alt_email: string;
   text: string;
 }
 
 /* Navlinks, but contact is kinda irrelevant since we have get in touch button? */
 export const NAV_LINKS: NavLink[] = [
-  { label: 'Services', href: '#services' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: 'services' },
+  { label: 'About', href: 'about' },
+  { label: 'Contact', href: 'contact' },
 ];
 
 export const SERVICES: Service[] = [
@@ -70,6 +71,7 @@ export const INTROS: Intro[] = [
     name: "Zack Sollenberger",
     position: "Co-Founder and CEO",
     email: "zsollenberger@sollenbergertech.com",
+    alt_email: "zsollenberger",
     text: "Zack is a rising Senior at the University of Delaware who has been \
     programming as a hobby since he was seven years old. He is currently \
     pursuing a Bachelor's Degree in Computer Science, and is enrolled in UD's 4+1 \
@@ -84,6 +86,7 @@ export const INTROS: Intro[] = [
     name: "Maksym Shkopas",
     position: "Co-Founder and CMO",
     email: "mshkopas@sollenbergertech.com",
+    alt_email: "mshkopas",
     text: "Max is a recentgraduate of the University of Delaware, holding a Bachelor's Degree in \
     Computer Science with a concentration in Artificial Intelligence, and is currently pursuing \
     a Master's Degree in Electrical Engineering. He has three years of experience developing AI \
