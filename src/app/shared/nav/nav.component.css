@@ -10,15 +10,31 @@ nav::before {
   border-bottom: 1px solid rgba(0,229,192,0.08);
 }
 
+
+
+.logo-container:hover .gradient-logo-open {
+  --gradient-color-1: var(--cyan);
+  --gradient-color-2: var(--teal);
+}
+
+.logo-container:hover .logo-main {
+  text-shadow: 0 0 0.3rem rgba(0,229,192,0.8);
+}
+
+.logo-container:hover .logo-legal {
+  color: var(--teal);
+}
+
 /* ── Logo ─────────────────────────────────────────────────────────────── */
 .logo { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
 .logo-main {
   font-family: 'Space Mono', monospace; font-weight: 700;
   font-size: 1.15rem; letter-spacing: .1em;
-  background: linear-gradient(100deg, var(--teal) 0%, var(--cyan) 45%, var(--purple) 100%);
+  background: linear-gradient(100deg, var(--teal) 0%, var(--cyan) 35%, var(--purple) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  transition-duration: 0.2s;
 }
-.logo-legal { font-size: .55rem; letter-spacing: .28em; text-transform: uppercase; color: var(--dim); margin-top: 3px; }
+.logo-legal { font-size: .55rem; letter-spacing: .28em; text-transform: uppercase; color: var(--dim); margin-top: 3px; transition-duration: 0.2s; }
 
 /* ── Right-side cluster (links + CTA) ─────────────────────────────────── */
 .nav-collapse { display: flex; align-items: center; gap: 2.5rem; }
