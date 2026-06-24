@@ -66,8 +66,6 @@
 @media (prefers-reduced-motion: reduce) {
   .personal-intros,
   .intro-card {
-    animation: none;
-    -webkit-animation: none;
     opacity: 1;
   }
 }

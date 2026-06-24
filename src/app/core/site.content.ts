@@ -87,7 +87,7 @@ export const INTROS: Intro[] = [
     position: "Co-Founder and CMO",
     email: "mshkopas@sollenbergertech.com",
     alt_email: "mshkopas",
-    text: "Max is a recentgraduate of the University of Delaware, holding a Bachelor's Degree in \
+    text: "Max is a recent graduate of the University of Delaware, holding a Bachelor's Degree in \
     Computer Science with a concentration in Artificial Intelligence, and is currently pursuing \
     a Master's Degree in Electrical Engineering. He has three years of experience developing AI \
     systems for Military and and Department of Defense applications, is a co-author on three \

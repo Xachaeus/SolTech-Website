@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { INTROS } from '../../core/site.content';
 
 @Component({
@@ -11,7 +11,7 @@ import { INTROS } from '../../core/site.content';
 export class PersonalIntros {
   protected readonly intros = INTROS;
 
-  ngOnViewInit() {
+  ngAfterViewInit() {
     setTimeout( () => {
       document.querySelectorAll('.intro-card').forEach(el => {
         el.classList.add('anim-done');
