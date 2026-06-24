@@ -8,7 +8,10 @@
     <div class="cl">
 
       @for (intro of intros; track intro.name; let i = $index) {
-        <div class="intro-card" [style.--anim-delay]="((i+1)/10)+'s'">
+        <div class="intro-card"
+        [style.animation-delay]="((i + 1) / 10) + 's'"
+        [style.-webkit-animation-delay]="((i + 1) / 10) + 's'"
+        >
           <div class="gl", style="margin-bottom: 15px;"></div>
           <div class="ci">
             <div class="cl">

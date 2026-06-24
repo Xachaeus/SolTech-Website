@@ -29,8 +29,8 @@
 .contact-hint { font-size: .78rem; color: var(--dim); line-height: 1.6; }
 
 .intro-card {
-  animation: appear 1s var(--anim-delay) ease both;
-  -webkit-animation: appear 1s var(--anim-delay) ease both;   /* Safari prefix */
+  animation: appear 1s ease both;
+  -webkit-animation: appear 1s ease both;   /* Safari prefix */
   opacity: 0;                          /* Explicit fallback starting state */
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
@@ -38,6 +38,10 @@
 
 .intro-card.animated {
   opacity: 1;                          /* Ensures visibility if animation is skipped */
+}
+
+.intro-card.anim-done {
+  opacity: 1;
 }
 
 /* Ensure @keyframes has a -webkit- mirror */
