@@ -6,7 +6,7 @@
     linear-gradient(rgba(0,229,192,.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,229,192,.018) 1px, transparent 1px);
   background-size: 72px 72px;
-  animation: appear 1s ease both;
+  /*animation: appear 1s ease both;
   -webkit-animation: appear 1s ease both;        /* Safari prefix */
 }
 
@@ -29,11 +29,11 @@
 .contact-hint { font-size: .78rem; color: var(--dim); line-height: 1.6; }
 
 .intro-card {
-  animation: appear 1s ease both;
-  -webkit-animation: appear 1s ease both;   /* Safari prefix */
+  /*animation: appear 1s ease both;
+  -webkit-animation: appear 1s ease both;
   opacity: 0;
   animation-fill-mode: forwards;
-  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;*/
 }
 
 .intro-card.animated {
