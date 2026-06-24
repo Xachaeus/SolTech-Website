@@ -1,5 +1,5 @@
 <nav [class.open]="menuOpen()">
-  <a class="logo" href="#" (click)="close()">
+  <a class="logo" routerLink="/" (click)="close()">
       <div class="row-container vertically-centered logo-container">
         <div class="gradient-logo-open" style="width: 50px; margin-right: 3px;"></div>
         <div class="column-container">
@@ -20,9 +20,9 @@
   <div class="nav-collapse" id="nav-collapse">
     <ul class="nav-links">
       @for (link of links; track link.href) {
-        <li><a [routerLink]="[]" [fragment]="link.href" (click)="close()">{{ link.label }}</a></li>
+        <li><a routerLink="/" [fragment]="link.href" (click)="close()">{{ link.label }}</a></li>
       }
     </ul>
-    <a [routerLink]="[]" fragment="contact" class="nav-cta" (click)="close()">Get in Touch</a>
+    <a routerLink="/" fragment="contact" class="nav-cta" (click)="close()">Get in Touch</a>
   </div>
 </nav>
