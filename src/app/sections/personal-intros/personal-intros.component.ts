@@ -10,4 +10,12 @@ import { INTROS } from '../../core/site.content';
 })
 export class PersonalIntros {
   protected readonly intros = INTROS;
+
+  ngOnViewInit() {
+    setTimeout( () => {
+      document.querySelectorAll('.intro-card').forEach(el => {
+        el.classList.add('anim-done');
+      });
+    }, 1000);
+  }
 }

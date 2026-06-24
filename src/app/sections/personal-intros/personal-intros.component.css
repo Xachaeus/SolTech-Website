@@ -31,7 +31,7 @@
 .intro-card {
   animation: appear 1s ease both;
   -webkit-animation: appear 1s ease both;   /* Safari prefix */
-  opacity: 0;                          /* Explicit fallback starting state */
+  opacity: 0;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
 }
