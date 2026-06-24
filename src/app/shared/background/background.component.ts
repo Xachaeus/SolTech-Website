@@ -75,7 +75,9 @@ function initStars(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Sto
   let W = 0,
     H = 0,
     t = 0,
-    raf = 0;
+    raf = 0,
+    oldWidth = 0,
+    oldHeight = 0;
   let stars: Star[] = [];
   const divisor = small ? 5200 : 3200; // larger divisor = fewer stars
 
@@ -99,8 +101,8 @@ function initStars(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Sto
   function resize(): void {
     const ratio = innerWidth / innerHeight;
     const vh = window.visualViewport?.height ?? innerHeight;
-    W = cv.width = (ratio > 1.0) ? innerWidth : screen.width;
-    H = cv.height = (ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
+    W = oldWidth = cv.width = innerWidth; //(ratio > 1.0) ? innerWidth : screen.width;
+    H = oldHeight = cv.height = innerHeight; //(ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
     build();
   }
   function frame(): void {
@@ -121,7 +123,7 @@ function initStars(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Sto
   }
 
   function onResize(): void {
-    if (innerWidth > innerHeight) {
+    if ((innerWidth > innerHeight) || (oldWidth > oldHeight)) {
       resize();
     }
   }
@@ -145,12 +147,14 @@ function initNebula(cv: HTMLCanvasElement, reduced: boolean): Stop {
   let W = 0,
     H = 0,
     t = 0,
-    raf = 0;
+    raf = 0,
+    oldWidth = 0,
+    oldHeight = 0;
   function resize(): void {
     const ratio = innerWidth / innerHeight;
     const vh = window.visualViewport?.height ?? innerHeight;
-    W = cv.width = (ratio > 1.0) ? innerWidth : screen.width;
-    H = cv.height = (ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
+    W = oldWidth = cv.width = innerWidth; //(ratio > 1.0) ? innerWidth : screen.width;
+    H = oldHeight = cv.height = innerHeight; //(ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
   }
 
   function blob(x: number, y: number, r: number, col: string, a: number): void {
@@ -192,7 +196,7 @@ function initNebula(cv: HTMLCanvasElement, reduced: boolean): Stop {
   }
 
   function onResize(): void {
-    if (innerWidth > innerHeight) {
+    if ((innerWidth > innerHeight) || (oldWidth > oldHeight)) {
       resize();
     }
   }
@@ -258,7 +262,9 @@ function initFog(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Stop 
   let W = 0,
     H = 0,
     t = 0,
-    raf = 0;
+    raf = 0,
+    oldWidth = 0,
+    oldHeight = 0;
   const scale = small ? 0.5 : 1; // thin out particle pools on phones
 
   const C: { dt: RGB; mt: RGB; bt: RGB; cy: RGB; pu: RGB; wh: RGB } = {
@@ -273,8 +279,9 @@ function initFog(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Stop 
   function resize(): void {
     const ratio = innerWidth / innerHeight;
     const vh = window.visualViewport?.height ?? innerHeight;
-    W = cv.width = (ratio > 1.0) ? innerWidth : screen.width;
-    H = cv.height = (ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
+    W = oldWidth = cv.width = innerWidth; //(ratio > 1.0) ? innerWidth : screen.width;
+    H = cv.height = Math.round(vh * 0.68); //(ratio > 1.0) ? Math.round(vh * 0.68) : screen.height;
+    oldHeight = innerHeight;
   }
 
   function makePuff(tier: number): Puff {
@@ -433,7 +440,9 @@ function initFog(cv: HTMLCanvasElement, reduced: boolean, small: boolean): Stop 
   }
   let resizeTimer = 0;
   function onResize(): void {
-    if (innerWidth > innerHeight) {
+    console.log(innerWidth, innerHeight, W, H);
+    if ((innerWidth > innerHeight) || (oldWidth > oldHeight)) {
+      console.log("Did a resize!");
       resize();
       clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => initPools(), 400);
