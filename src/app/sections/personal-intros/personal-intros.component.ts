@@ -5,7 +5,7 @@ import { INTROS } from '../../core/site.content';
   selector: 'app-personal-intros',
   imports: [],
   templateUrl: './personal-intros.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  //changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './personal-intros.component.css',
 })
 export class PersonalIntros {
