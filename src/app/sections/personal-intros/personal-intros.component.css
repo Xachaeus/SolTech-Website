@@ -30,7 +30,7 @@
 
 .intro-card {
   animation: appear 1s ease both;
-  -webkit-animation: appear 1s ease both;   /* Safari prefix */
+  -webkit-animation: appear 1s ease both;
   opacity: 0;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
@@ -46,12 +46,12 @@
 
 /* Ensure @keyframes has a -webkit- mirror */
 @-webkit-keyframes appear {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px); -webkit-transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); -webkit-transform: translateY(0); }
 }
 @keyframes appear {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px);-webkit-transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); -webkit-transform: translateY(0); }
 }
 
 @media (max-width: 860px) {
@@ -66,8 +66,6 @@
 @media (prefers-reduced-motion: reduce) {
   .personal-intros,
   .intro-card {
-    animation: none;
-    -webkit-animation: none;
     opacity: 1;
   }
 }
