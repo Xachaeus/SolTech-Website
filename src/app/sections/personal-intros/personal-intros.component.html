@@ -7,8 +7,9 @@
 
     <div class="cl">
 
-      @for (intro of intros; track intro; let i = $index) {
-        <div class="intro-card"
+
+      @for (intro of intros; track intro.name; let i = $index) {
+        <div class="intro-card" [id]="intro.url_name"
           [style.animation-delay]="((i + 1) / 10) + 's'"
           [style.-webkit-animation-delay]="((i + 1) / 10) + 's'"
         >

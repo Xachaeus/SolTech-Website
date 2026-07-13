@@ -3,6 +3,7 @@ footer {
   padding: 2rem var(--pad-x);
   display: flex; justify-content: space-between; align-items: center;
   border-top: 1px solid rgba(0,229,192,.06);
+  margin-top: auto;
   background: rgba(2,6,9,0.9);
 }
 .fb {

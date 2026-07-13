@@ -23,6 +23,7 @@ export interface AboutPoint {
 
 export interface Intro {
   name: string;
+  url_name: string;
   position: string;
   email: string;
   alt_email: string;
@@ -69,6 +70,7 @@ export const ABOUT_POINTS: AboutPoint[] = [
 export const INTROS: Intro[] = [
   {
     name: "Zack Sollenberger",
+    url_name: "zack-sollenberger",
     position: "Co-Founder and CEO",
     email: "zsollenberger@sollenbergertech.com",
     alt_email: "zsollenberger",
@@ -84,6 +86,7 @@ export const INTROS: Intro[] = [
 
   {
     name: "Maksym Shkopas",
+    url_name: "maksym-shkopas",
     position: "Co-Founder and CMO",
     email: "mshkopas@sollenbergertech.com",
     alt_email: "mshkopas",
