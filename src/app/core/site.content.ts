@@ -23,6 +23,7 @@ export interface AboutPoint {
 
 export interface Intro {
   name: string;
+  url_name: string;
   position: string;
   email: string;
   alt_email: string;
@@ -69,6 +70,7 @@ export const ABOUT_POINTS: AboutPoint[] = [
 export const INTROS: Intro[] = [
   {
     name: "Zack Sollenberger",
+    url_name: "zack-sollenberger",
     position: "Co-Founder and CEO",
     email: "zsollenberger@sollenbergertech.com",
     alt_email: "zsollenberger",
@@ -84,10 +86,11 @@ export const INTROS: Intro[] = [
 
   {
     name: "Maksym Shkopas",
+    url_name: "maksym-shkopas",
     position: "Co-Founder and CMO",
     email: "mshkopas@sollenbergertech.com",
     alt_email: "mshkopas",
-    text: "Max is a recentgraduate of the University of Delaware, holding a Bachelor's Degree in \
+    text: "Max is a recent graduate of the University of Delaware, holding a Bachelor's Degree in \
     Computer Science with a concentration in Artificial Intelligence, and is currently pursuing \
     a Master's Degree in Electrical Engineering. He has three years of experience developing AI \
     systems for Military and and Department of Defense applications, is a co-author on three \
