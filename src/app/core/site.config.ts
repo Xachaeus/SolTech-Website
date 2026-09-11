@@ -6,7 +6,7 @@ export const SITE = {
   /** PLACEHOLDER */
   email: 'contact@sollenbergertech.com',
 
-  tagline: 'Custom Technology Solutions & AI Research',
+  tagline: 'Innovating in Software and Technology',
 
   /** Used by the footer copyright line. Auto-updates each year. */
   get year(): number {

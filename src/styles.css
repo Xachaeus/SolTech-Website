@@ -92,6 +92,14 @@ body {
   animation: gs 8s ease-in-out infinite alternate;
 }
 
+.g-alt {
+  font-weight: 700;
+  background: linear-gradient(110deg, var(--teal) 0%, var(--purple) 38%, var(--cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background-size: 200% 100%;
+  animation: gs 8s ease-in-out infinite alternate;
+}
+
 /* ── Shared buttons ───────────────────────────────────────────────────────── */
 .btn-glow {
   display: inline-block;
@@ -168,7 +176,7 @@ body {
 
 /* Respect users who prefer reduced motion: kill the cosmetic loops. */
 @media (prefers-reduced-motion: reduce) {
-  .g, .btn-glow { animation: none; }
+  .g, .g-alt, .btn-glow { animation: none; }
   html { scroll-behavior: auto; }
 }
 

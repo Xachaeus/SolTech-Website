@@ -39,31 +39,31 @@ export const NAV_LINKS: NavLink[] = [
 
 export const SERVICES: Service[] = [
   {
-    title: 'Custom Websites & Web Apps',
-    body: 'Hand-built from scratch — no page builders, no cookie-cutter templates. We design and develop websites and full web applications tailored to your brand, workflow, and goals.',
+    title: 'New Ideas Every Day',
+    body: 'We love to think up new and interesting ideas, and our team finds the best ways to make them real.',
   },
   {
-    title: 'AI Integration & Research',
-    body: 'We research, prototype, and integrate AI solutions into real business workflows — from custom language model pipelines to intelligent automation that actually saves you time and money.',
+    title: 'Expert Ventures from Expert Developers',
+    body: 'Our think tank consists exclusively of high-performance, passionate, expert developers who love what they do.',
   },
   {
-    title: 'Technology Consulting',
-    body: "Not sure what you need? We'll assess your current stack, identify opportunities, and build a clear technology roadmap — honest recommendations with no unnecessary upsells.",
+    title: 'Building Our Own Future',
+    body: "Our self-funded team seeks to build the future we want to see, innovating project after project as we go.",
   },
 ];
 
 export const ABOUT_POINTS: AboutPoint[] = [
   {
-    title: 'Everything is Custom',
-    body: "We don't drop you into a Wix template or a generic AI wrapper. Every project starts from your specific problem and is built to solve it exactly.",
+    title: 'Venture Builders',
+    body: 'We are a self-funded team of developers and researchers who are always looking for ways to make our crazy ideas into reality.'
   },
   {
-    title: 'Real AI, Real Results',
-    body: 'Our AI work is grounded in actual research — not marketing buzzwords. We stay current with the field so your integrations use what actually works.',
+    title: 'From Start To Finish',
+    body: 'We don\'t just come up with ideas or fund other people\'s projects; we take our ideas from concept to completion, working at every phase of product development.',
   },
   {
-    title: 'Straight Talk, Always',
-    body: "We'll tell you when something is overkill, when a simpler solution is better, and what you actually need — not what earns us more hours.",
+    title: 'Many Ideas At A Time',
+    body: "Our passionate team works day and night to build our visions into reality, letting us handle several ventures at once.",
   },
 ];
 
